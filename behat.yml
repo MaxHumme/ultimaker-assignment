@@ -1,0 +1,14 @@
+default:
+  suites:
+    default:
+      contexts:
+        - FeatureContext:
+            printService: '@app.print_service'
+            userService: '@app.user_service'
+            jsonArrayComparator: '@app.json_array_comparator'
+  extensions:
+    Behat\Symfony2Extension: ~
+    Behat\MinkExtension:
+      sessions:
+        default:
+          symfony2: ~

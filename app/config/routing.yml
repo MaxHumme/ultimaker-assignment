@@ -1,0 +1,24 @@
+api_print_index:
+  path:     /api/v1/{username}/prints
+  defaults: { _controller: AppBundle\Api\Controller\PrintController::indexAction }
+  methods:  [GET]
+
+api_print_create:
+  path:     /api/v1/{username}/prints/new
+  defaults: { _controller: AppBundle\Api\Controller\PrintController::createAction }
+  methods:  [POST]
+
+api_print_show:
+  path:     /api/v1/{username}/prints/{printPublicId}
+  defaults: { _controller: AppBundle\Api\Controller\PrintController::showAction }
+  methods:  [GET]
+
+api_print_update:
+  path:     /api/v1/{username}/prints/{printPublicId}
+  defaults: { _controller: AppBundle\Api\Controller\PrintController::updateAction }
+  methods:  [PUT]
+
+api_print_delete:
+  path:     /api/v1/{username}/prints/{printPublicId}
+  defaults: { _controller: AppBundle\Api\Controller\PrintController::deleteAction }
+  methods:  [DELETE]

@@ -1,0 +1,47 @@
+version: "3"
+
+services:
+  nginx:
+    build: ./docker/nginx
+    ports:
+      - 80:80
+    volumes:
+      - ./:/var/www/html
+    networks:
+      - server
+    depends_on:
+      - php
+
+  php:
+    build: ./docker/php
+    expose:
+      - 9000
+    volumes:
+      - ./:/var/www/html
+    networks:
+      - database
+      - server
+    depends_on:
+      - mysql
+
+  mysql:
+    build: ./docker/mysql
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    ports:
+      - 3306:3306
+    volumes:
+      - data:/var/lib/mysql
+    networks:
+      - database
+    environment:
+      MYSQL_ROOT_PASSWORD: ultimaker
+      MYSQL_DATABASE: ultimaker
+      MYSQL_USER: ultimaker
+      MYSQL_PASSWORD: ultimaker
+
+volumes:
+  data:
+
+networks:
+  database:
+  server:

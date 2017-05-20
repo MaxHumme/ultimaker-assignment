@@ -1,0 +1,64 @@
+# Learn more about services, parameters and containers at
+# http://symfony.com/doc/current/service_container.html
+parameters:
+  #parameter_name: value
+
+services:
+  app.authentication_listener:
+    class: AppBundle\Framework\EventListener\AuthenticationListener
+    arguments: ['@app.user_service']
+    tags:
+      - { name: kernel.event_listener, event: kernel.controller, method: onKernelController }
+
+  app.formatter_factory:
+    class: AppBundle\Api\Factory\FormatterFactory
+    arguments: ['@request_stack', '%images_base_url%']
+
+  app.http_exception_listener:
+    class: AppBundle\Framework\EventListener\HttpExceptionListener
+    tags:
+      - { name: kernel.event_listener, event: kernel.exception }
+
+  app.json_array_comparator:
+    class: AppBundle\App\JsonArrayComparator
+    arguments: []
+
+  app.image_factory:
+    class: AppBundle\Domain\Factory\ImageFactory
+    arguments: []
+
+  app.image_repository:
+    class: AppBundle\Infrastructure\Repository\ImageRepository
+    arguments: ['@doctrine', '@symfony.mime_type_extension_guesser']
+
+  app.image_service:
+    class: AppBundle\Domain\Service\ImageService
+    arguments: ['@app.image_factory', '@app.image_repository', '%images_directory%']
+
+  app.print_factory:
+    class: AppBundle\Domain\Factory\PrintFactory
+    arguments: ['@app.image_factory']
+
+  app.print_repository:
+    class: AppBundle\Infrastructure\Repository\PrintRepository
+    arguments: ['@doctrine', '@app.image_repository']
+
+  app.print_service:
+    class: AppBundle\Domain\Service\PrintService
+    arguments: ['@app.image_service', '@app.print_factory', '@app.print_repository', '@app.user_service']
+
+  app.user_factory:
+    class: AppBundle\Domain\Factory\UserFactory
+    arguments: []
+
+  app.user_repository:
+    class: AppBundle\Infrastructure\Repository\UserRepository
+    arguments: ['@doctrine']
+
+  app.user_service:
+    class: AppBundle\Domain\Service\UserService
+    arguments: ['@app.user_factory', '@app.user_repository']
+
+  symfony.mime_type_extension_guesser:
+    class: Symfony\Component\HttpFoundation\File\MimeType\MimeTypeExtensionGuesser
+    arguments: []
